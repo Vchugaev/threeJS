@@ -10,12 +10,13 @@ import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer, RenderPass, BloomEffect, GodRaysEffect, EffectPass, FXAAEffect, SMAAEffect } from 'postprocessing';
 const GLRFloader = new GLTFLoader();
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import gsap from 'gsap';
 
 
 const { sizes, camera, scene, canvas, controls, renderer } = init();
 
 let crystal = null
-
+let isScroll = false
 
 const rgbeLoader = new RGBELoader();
 rgbeLoader.load('./models/fantasy/Space_21.hdr', (texture) => {
@@ -23,8 +24,8 @@ rgbeLoader.load('./models/fantasy/Space_21.hdr', (texture) => {
     scene.environment = texture;
 });
 
-
-
+const planeBG = document.querySelector('.change__bg__color--plane')
+document.documentElement.scrollTop
 
 function addLightToModel(model) {
     // Обходим все меши в модели и заменяем их материал на самосветящийся
@@ -46,16 +47,14 @@ function addLightToModel(model) {
 
 
 GLRFloader.load('./models/crystal/scene.gltf', (gltf) => {
-    gltf.scene.position.set(0, 5, -40);
+    gltf.scene.position.set(2, 5, -40);
     gltf.scene.scale.set(200, 200, 200);
     scene.add(gltf.scene);
     console.log(gltf.scene);
     crystal = gltf.scene
-
+    crystal.rotation.z = Math.PI / 32
     addLightToModel(gltf.scene);
 });
-
-
 
 
 
@@ -84,7 +83,7 @@ const bloomEffect = new BloomEffect({
     kernelSize: 2,
     luminanceThreshold: 0,
     luminanceSmoothing: 1,
-    // mipmapBlur: true,
+    mipmapBlur: true,
 });
 
 
@@ -116,40 +115,39 @@ controls.enabled = false;
 // scene.add(directionalLight);
 
 
-const gui = new dat.GUI()
-const cameraParams = {
-    posX: camera.position.x,
-    posY: camera.position.y,
-    posZ: camera.position.z,
-    fov: camera.fov,
-    rotX: camera.rotation.x,
-    rotY: camera.rotation.y,
-    rotZ: camera.rotation.z
-};
+// const gui = new dat.GUI()
+// const cameraParams = {
+//     posX: camera.position.x,
+//     posY: camera.position.y,
+//     posZ: camera.position.z,
+//     fov: camera.fov,
+//     rotX: camera.rotation.x,
+//     rotY: camera.rotation.y,
+//     rotZ: camera.rotation.z
+// };
 
-// Управление камерой
-const cameraFolder = gui.addFolder('Camera');
-const crystalFolder = gui.addFolder('Crystal');
-cameraFolder.add(cameraParams, 'posX', -500, 500).onChange(value => camera.position.x = value);
-cameraFolder.add(cameraParams, 'posY', -500, 500).onChange(value => camera.position.y = value);
-cameraFolder.add(cameraParams, 'posZ', -500, 500).onChange(value => camera.position.z = value);
-cameraFolder.add(cameraParams, 'fov', 30, 120).onChange(value => {
-    camera.fov = value;
-    camera.updateProjectionMatrix();
-});
-cameraFolder.add(cameraParams, 'rotX', -Math.PI, Math.PI).onChange(value => camera.rotation.x = value);
-cameraFolder.add(cameraParams, 'rotY', -Math.PI, Math.PI).onChange(value => camera.rotation.y = value);
-cameraFolder.add(cameraParams, 'rotZ', -Math.PI, Math.PI).onChange(value => camera.rotation.z = value);
+// // Управление камерой
+// const cameraFolder = gui.addFolder('Camera');
+// const crystalFolder = gui.addFolder('Crystal');
+// cameraFolder.add(cameraParams, 'posX', -500, 500).onChange(value => camera.position.x = value);
+// cameraFolder.add(cameraParams, 'posY', -500, 500).onChange(value => camera.position.y = value);
+// cameraFolder.add(cameraParams, 'posZ', -500, 500).onChange(value => camera.position.z = value);
+// cameraFolder.add(cameraParams, 'fov', 30, 120).onChange(value => {
+//     camera.fov = value;
+//     camera.updateProjectionMatrix();
+// });
+// cameraFolder.add(cameraParams, 'rotX', -Math.PI, Math.PI).onChange(value => camera.rotation.x = value);
+// cameraFolder.add(cameraParams, 'rotY', -Math.PI, Math.PI).onChange(value => camera.rotation.y = value);
+// cameraFolder.add(cameraParams, 'rotZ', -Math.PI, Math.PI).onChange(value => camera.rotation.z = value);
 
-crystalFolder.add(cameraParams, 'rotY', -Math.PI, Math.PI).onChange(value => crystal.rotation.y = value);
-crystalFolder.add(cameraParams, 'rotZ', -Math.PI, Math.PI).onChange(value => crystal.rotation.z = value);
-crystalFolder.add(cameraParams, 'rotX', -Math.PI, Math.PI).onChange(value => crystal.rotation.x = value);
+// crystalFolder.add(cameraParams, 'rotY', -Math.PI, Math.PI).onChange(value => crystal.rotation.y = value);
+// crystalFolder.add(cameraParams, 'rotZ', -Math.PI, Math.PI).onChange(value => crystal.rotation.z = value);
+// crystalFolder.add(cameraParams, 'rotX', -Math.PI, Math.PI).onChange(value => crystal.rotation.x = value);
 
-cameraFolder.open();
 const stats = new Stats()
-stats.showPanel(0)
+// stats.showPanel(0)
 
-document.body.append(stats.dom)
+// document.body.append(stats.dom)
 
 let rotationSpeed = 0; // текущая скорость вращения (в «радианах в секунду»)
 let lastMouseX = null; // последнее значение координаты X курсора
@@ -169,22 +167,22 @@ const tick = () => {
         if (rotationSpeed < 1) {
             crystal.rotation.y += 0.001
         }
-        console.log(rotationSpeed);
-        
+
         // Применяем плавное затухание (используем слабее затухание, чтобы энергия decay была мягче)
         rotationSpeed *= 0.99;
-        crystal.rotation.z = Math.PI / 32
+        // crystal.rotation.z = Math.PI / 32
         crystal.rotation.x = Math.PI / 32
         // Обновляем интенсивность свечения (энергия) пропорционально скорости,
         // но задаём минимальное значение, чтобы свет всегда был.
         crystal.traverse((child) => {
-            if (child.isMesh && child.material) {
+            if (child.isMesh && child.material && !isScroll) {
                 // Вычисляем интенсивность на основе абсолютной скорости
                 let intensity = Math.abs(rotationSpeed) / 2;
                 // Задаём минимум (например, 0.5) и максимум (например, 3)
                 intensity = Math.max(intensity, 0.5);
                 intensity = Math.min(intensity, 30);
                 child.material.emissiveIntensity = intensity;
+                // child.material.roughness = -intensity;
             }
         });
     }
@@ -194,23 +192,99 @@ const tick = () => {
 tick();
 function onMouseMove(event) {
     const currentTime = performance.now();
-    if (lastMouseX !== null && lastTime !== null) {
+    if (lastMouseX !== null && lastTime !== null && !isScroll) {
         const deltaTime = (currentTime - lastTime) / 1000; // в секундах
         const deltaX = event.clientX - lastMouseX;          // изменение позиции
         const speed = deltaX / deltaTime;                   // пиксели в секунду
-        
+
         // Добавляем энергию: не перезаписываем, а суммируем с текущей скоростью.
         // Коэффициент масштабирования подбирается экспериментально.
         rotationSpeed += speed * 0.0003;
-        
+
         // Ограничиваем максимальную скорость вращения, если нужно
-        const maxRotationSpeed = 100;
+        const maxRotationSpeed = 10;
         if (rotationSpeed > maxRotationSpeed) rotationSpeed = maxRotationSpeed;
         if (rotationSpeed < -maxRotationSpeed) rotationSpeed = -maxRotationSpeed;
     }
     lastMouseX = event.clientX;
     lastTime = currentTime;
 }
+
+
+// Предположим, что объект crystal, камера и GSAP уже инициализированы
+const state = { value: 0 };
+let tween; // для хранения текущего tween’а
+
+window.addEventListener('scroll', () => {
+    // Получаем текущее значение прокрутки
+    const currentScroll = window.scrollY;
+
+    // GSAP-анимация: анимируем state.value к currentScroll
+    if (tween) tween.kill();
+    tween = gsap.to(state, {
+        value: currentScroll,
+        duration: 0.5,         // длительность анимации (сек)
+        ease: "power2.out",    // выбранный easing
+        onUpdate: () => {
+            console.log('GSAP state.value:', state.value);
+
+
+            crystal.position.z = (state.value / 50) - 40
+            camera.fov = 50 - state.value / 20;
+            camera.updateProjectionMatrix();
+
+            crystal.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    // Вычисляем интенсивность на основе rotationSpeed
+                    let intensity = Math.abs(rotationSpeed) / 2;
+                    // Ограничиваем диапазон значения интенсивности
+                    intensity = Math.max(intensity, 0.5);
+                    intensity = Math.min(intensity, 30);
+
+                    // Если формула должна зависеть от scroll, можно задать свою логику,
+                    // но в данном случае делаем просто intensity * 2
+                    child.material.emissiveIntensity = intensity * Math.pow(state.value / 300, 3);  // Exponential increase
+                    child.material.roughness = intensity * state.value / 800;
+                    // Если нужно изменить roughness, раскомментируйте и скорректируйте:
+                    // child.material.roughness = -intensity;
+                }
+            });
+
+
+            planeBG.style.backgroundColor = '#fff'
+            if (state.value > 650) {
+                planeBG.style.opacity = Math.pow((state.value - 650) / 600, 3)
+            } else {
+                planeBG.style.opacity = 0
+            }
+        }
+    });
+
+
+    // Обновляем флаг isScroll
+    if (currentScroll > 300) {
+        isScroll = true;
+    } else {
+        isScroll = false;
+    }
+
+    // Обновляем позицию и вращение объекта crystal
+
+
+    const crystalRotation = Math.PI / 32;
+    const crystalY = 5;
+    crystal.position.y = crystalY - (currentScroll / 250);
+    crystal.rotation.z = crystalRotation + (currentScroll / 500);
+
+    // Обновляем настройки камеры
+    // camera.fov = 50 - currentScroll / 20;
+
+    // Обходим дочерние элементы crystal и обновляем материал
+
+
+    console.log('window.scrollY / 100:', currentScroll / 100);
+});
+
 
 
 window.addEventListener('mousemove', onMouseMove, false);

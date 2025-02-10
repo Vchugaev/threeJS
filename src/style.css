@@ -1,31 +1,37 @@
+/* Сброс стилей для всех элементов */
 * {
     margin: 0;
     padding: 0;
     background: none;
     border: none;
     outline: none;
+    box-sizing: border-box;
 }
 
+/* Базовые настройки для страницы */
 html,
 body {
-    overflow: hidden;
+    overflow-x: hidden;
+    height: 300vh; /* Высота страницы – 3 экрана */
 }
 
+/* Фоновой canvas занимает весь экран */
 .canvas {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: -5;
 }
 
+/* Контейнер с отступами */
 .wrapper {
-    margin: 100px;
+    margin: 5%;
 }
 
+/* Основной текстовый элемент */
 span {
     color: white;
-    /* transform: translate(-50%, -50%); */
-    font-family: "Liter";
+    font-family: "Liter", sans-serif;
     font-weight: 800;
     font-size: 4rem;
     z-index: 2;
@@ -34,27 +40,126 @@ span {
     text-transform: uppercase;
 }
 
+/* Блок приветствия */
 .welcome {
     width: 300px;
 }
-.welcome__read {
+
+.welcome__read--2 {
+    display: none;
+}
+.welcome__read--1, .welcome__read--2 {
     margin-top: 10px;
-    color: rgb(255, 255, 255);
-    border: 1px solid white;
+    color: #fff;
+    border: 1px solid #fff;
     padding: 15px 30px;
     border-radius: 500px;
-    font-family: "Liter";
+    font-family: "Liter", sans-serif;
     font-weight: 800;
     font-size: 2rem;
     letter-spacing: 2px;
     line-height: 100%;
     text-transform: uppercase;
+    width: fit-content;
 }
+
+/* Блок описания */
 .description {
-    width: 500px;
+    width: auto;
     float: right;
     margin-top: 310px;
+    display: flex;
+    flex-direction: column;
 }
+
+/* Текст описания */
 .description__text {
     font-size: 3rem;
+}
+
+/* Плоскость для изменения цвета фона – занимает весь экран */
+.change__bg__color--plane {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* background: #000; */
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+}
+
+/* Медиа-запросы для адаптации под разные размеры экрана */
+
+/* Для экранов до 1024px */
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        margin: 3%;
+    }
+    span {
+        font-size: 3rem;
+    }
+    .welcome {
+        width: 250px;
+    }
+    .welcome__read--1, .welcome__read--2 {
+        font-size: 1.8rem;
+        padding: 12px 25px;
+    }
+    .welcome__read--2 {
+        display: block;
+        margin: auto;
+        margin-top: 10px;
+    }
+    .welcome__read--1 {
+        display: none;
+    }
+    .description {
+        width: 100%;
+        float: none;
+        margin-top: 200px;
+        text-align: center;
+    }
+    .description__text {
+        font-size: 2.5rem;
+    }
+    
+}
+
+/* Для экранов до 768px */
+@media screen and (max-width: 768px) {
+    span {
+        font-size: 2.5rem;
+    }
+    .welcome {
+        width: 200px;
+    }
+    .welcome__read {
+        font-size: 1.6rem;
+        padding: 10px 20px;
+    }
+    .description__text {
+        font-size: 2rem;
+    }
+}
+
+/* Для экранов до 480px (мобильные устройства) */
+@media screen and (max-width: 480px) {
+    span {
+        font-size: 2rem;
+    }
+    .welcome {
+        width: 150px;
+    }
+    .welcome__read {
+        font-size: 1.4rem;
+        padding: 8px 15px;
+    }
+    .description {
+        margin-top: 150px;
+    }
+    .description__text {
+        font-size: 1.8rem;
+    }
 }
