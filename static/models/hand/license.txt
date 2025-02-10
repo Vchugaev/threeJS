@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hand animation test
+* source:	https://sketchfab.com/3d-models/hand-animation-test-b29e45290a8a4b4abad7c3405a371f67
+* author:	SantosGabriel (https://sketchfab.com/SantosGabriel)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hand animation test" (https://sketchfab.com/3d-models/hand-animation-test-b29e45290a8a4b4abad7c3405a371f67) by SantosGabriel (https://sketchfab.com/SantosGabriel) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
