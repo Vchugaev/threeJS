@@ -33,7 +33,7 @@ function addLightToModel(model) {
             child.material = new THREE.MeshPhysicalMaterial({
                 map: child.material.map,  // сохраняем текстуру, если она есть
                 emissive: new THREE.Color(0x33c9ff),
-                emissiveIntensity: 3,
+                emissiveIntensity: 0,
                 envMap: scene.environment,
                 emissiveMap: child.material.map,
                 roughness: 0,
@@ -110,10 +110,10 @@ controls.enabled = false;
 
 
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 10); // Направленный свет для создания ярких бликов
-directionalLight.position.set(50, 150, 50);
-directionalLight.castShadow = true;
-scene.add(directionalLight);
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 10); // Направленный свет для создания ярких бликов
+// directionalLight.position.set(50, 150, 50);
+// directionalLight.castShadow = true;
+// scene.add(directionalLight);
 
 
 const gui = new dat.GUI()
@@ -129,6 +129,7 @@ const cameraParams = {
 
 // Управление камерой
 const cameraFolder = gui.addFolder('Camera');
+const crystalFolder = gui.addFolder('Crystal');
 cameraFolder.add(cameraParams, 'posX', -500, 500).onChange(value => camera.position.x = value);
 cameraFolder.add(cameraParams, 'posY', -500, 500).onChange(value => camera.position.y = value);
 cameraFolder.add(cameraParams, 'posZ', -500, 500).onChange(value => camera.position.z = value);
@@ -139,13 +140,20 @@ cameraFolder.add(cameraParams, 'fov', 30, 120).onChange(value => {
 cameraFolder.add(cameraParams, 'rotX', -Math.PI, Math.PI).onChange(value => camera.rotation.x = value);
 cameraFolder.add(cameraParams, 'rotY', -Math.PI, Math.PI).onChange(value => camera.rotation.y = value);
 cameraFolder.add(cameraParams, 'rotZ', -Math.PI, Math.PI).onChange(value => camera.rotation.z = value);
+
+crystalFolder.add(cameraParams, 'rotY', -Math.PI, Math.PI).onChange(value => crystal.rotation.y = value);
+crystalFolder.add(cameraParams, 'rotZ', -Math.PI, Math.PI).onChange(value => crystal.rotation.z = value);
+crystalFolder.add(cameraParams, 'rotX', -Math.PI, Math.PI).onChange(value => crystal.rotation.x = value);
+
 cameraFolder.open();
 const stats = new Stats()
 stats.showPanel(0)
 
 document.body.append(stats.dom)
 
-let targetRotationY = 0;
+let rotationSpeed = 0; // текущая скорость вращения (в «радианах в секунду»)
+let lastMouseX = null; // последнее значение координаты X курсора
+let lastTime = null;   // последнее время (в мс)
 const clock = new THREE.Clock()
 const tick = () => {
     const delta = clock.getDelta()
@@ -156,22 +164,55 @@ const tick = () => {
 
 
     if (crystal) {
-        // Плавная интерполяция: текущее значение приближается к целевому с коэффициентом сглаживания (например, 0.05)
-        crystal.rotation.y += (targetRotationY - crystal.rotation.y) * 0.01;
-        // crystal.rotation.x += (targetRotationX - crystal.rotation.x) * 0.05;
+        // Обновляем вращение модели с учётом накопленной скорости
+        crystal.rotation.y += rotationSpeed * delta;
+        if (rotationSpeed < 1) {
+            crystal.rotation.y += 0.001
+        }
+        console.log(rotationSpeed);
+        
+        // Применяем плавное затухание (используем слабее затухание, чтобы энергия decay была мягче)
+        rotationSpeed *= 0.99;
+        crystal.rotation.z = Math.PI / 32
+        crystal.rotation.x = Math.PI / 32
+        // Обновляем интенсивность свечения (энергия) пропорционально скорости,
+        // но задаём минимальное значение, чтобы свет всегда был.
+        crystal.traverse((child) => {
+            if (child.isMesh && child.material) {
+                // Вычисляем интенсивность на основе абсолютной скорости
+                let intensity = Math.abs(rotationSpeed) / 2;
+                // Задаём минимум (например, 0.5) и максимум (например, 3)
+                intensity = Math.max(intensity, 0.5);
+                intensity = Math.min(intensity, 30);
+                child.material.emissiveIntensity = intensity;
+            }
+        });
     }
     composer.render()
     stats.end();
 };
 tick();
-
-
-const mouse = { x: 0, y: 0 };
-
 function onMouseMove(event) {
-    // Здесь вы можете настроить коэффициенты для достижения нужной чувствительности
-    targetRotationY = (event.clientX / window.innerWidth) * 30;
+    const currentTime = performance.now();
+    if (lastMouseX !== null && lastTime !== null) {
+        const deltaTime = (currentTime - lastTime) / 1000; // в секундах
+        const deltaX = event.clientX - lastMouseX;          // изменение позиции
+        const speed = deltaX / deltaTime;                   // пиксели в секунду
+        
+        // Добавляем энергию: не перезаписываем, а суммируем с текущей скоростью.
+        // Коэффициент масштабирования подбирается экспериментально.
+        rotationSpeed += speed * 0.0003;
+        
+        // Ограничиваем максимальную скорость вращения, если нужно
+        const maxRotationSpeed = 100;
+        if (rotationSpeed > maxRotationSpeed) rotationSpeed = maxRotationSpeed;
+        if (rotationSpeed < -maxRotationSpeed) rotationSpeed = -maxRotationSpeed;
+    }
+    lastMouseX = event.clientX;
+    lastTime = currentTime;
 }
+
+
 window.addEventListener('mousemove', onMouseMove, false);
 /** Базовые обпаботчики событий длы поддержки ресайза */
 window.addEventListener('resize', () => {
