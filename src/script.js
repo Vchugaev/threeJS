@@ -11,12 +11,22 @@ import { EffectComposer, RenderPass, BloomEffect, GodRaysEffect, EffectPass, FXA
 const GLRFloader = new GLTFLoader();
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import gsap from 'gsap';
+import SplitType from 'split-type';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+
+gsap.registerPlugin(ScrollTrigger);
+
+const myText = new SplitType('.chugaev');
+const aboutSection = document.querySelector('.about')
+const aboutTextBox = document.querySelector('.about__text__box')
 
 
 const { sizes, camera, scene, canvas, controls, renderer } = init();
 
 let crystal = null
 let isScroll = false
+
 
 const rgbeLoader = new RGBELoader();
 rgbeLoader.load('./models/fantasy/Space_21.hdr', (texture) => {
@@ -214,7 +224,7 @@ function onMouseMove(event) {
 // Предположим, что объект crystal, камера и GSAP уже инициализированы
 const state = { value: 0 };
 let tween; // для хранения текущего tween’а
-
+let tl = gsap.timeline()
 window.addEventListener('scroll', () => {
     // Получаем текущее значение прокрутки
     const currentScroll = window.scrollY;
@@ -256,6 +266,27 @@ window.addEventListener('scroll', () => {
                 planeBG.style.opacity = Math.pow((state.value - 650) / 600, 3)
             } else {
                 planeBG.style.opacity = 0
+            }
+            if (state.value > 1350) {
+                planeBG.style.opacity = 0
+                canvas.style.display = 'none'
+                aboutSection.style.opacity = 1
+
+                if (!tl.isActive()) {
+                    tl.to('.char', {
+                        y: 0,
+                        stagger: 0.05,
+                        duration: 0.1,
+                    })
+
+                    aboutTextBox.classList.add('animate__width')
+                } else {
+                    tl.play()
+                }
+
+            } else {
+                canvas.style.display = 'block'
+                aboutSection.style.opacity = 0
             }
         }
     });

@@ -21,6 +21,7 @@
     "portfinder-sync": "0.0.2",
     "postprocessing": "^6.36.7",
     "raw-loader": "^4.0.2",
+    "split-type": "^0.3.4",
     "stats.js": "^0.17.0",
     "style-loader": "^2.0.0",
     "three": "^0.170.0",

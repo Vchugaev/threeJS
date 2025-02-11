@@ -8,11 +8,15 @@
     box-sizing: border-box;
 }
 
-/* Базовые настройки для страницы */
+@font-face {
+    font-family: 'bebas';
+    src: url('./assets//fonts//bebasneuecyrillic.ttf');
+}
+
 html,
 body {
     overflow-x: hidden;
-    height: 300vh; /* Высота страницы – 3 экрана */
+    min-height: 300vh; /* Высота страницы – 3 экрана */
 }
 
 /* Фоновой canvas занимает весь экран */
@@ -28,7 +32,7 @@ body {
     margin: 5%;
 }
 
-/* Основной текстовый элемент */
+
 span {
     color: white;
     font-family: "Liter", sans-serif;
@@ -40,9 +44,72 @@ span {
     text-transform: uppercase;
 }
 
-/* Блок приветствия */
+.about {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    opacity: 0;
+    transition: 400ms;
+}
+
+h2 {
+    color: rgb(0, 0, 0);
+    font-family: "bebas", sans-serif;
+    font-weight: 800;
+    font-size: 4rem;
+    z-index: 2;
+    letter-spacing: 2px;
+    line-height: 100%;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.about__text {
+    color: rgb(0, 0, 0);
+    font-family: "bebas", sans-serif;
+    font-weight: 400;
+    font-size: 2rem;
+    z-index: 2;
+    max-width: 620px;
+    margin: 20px auto;
+    letter-spacing: 2px;
+    line-height: 100%;
+    text-transform: uppercase;
+    text-align: center;
+}
+
 .welcome {
     width: 300px;
+}
+.char {
+    transform: translateY(115px);
+    transition: transform .5s;
+}
+.chugaev {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+.about__text__box {
+    background: #ffffff;
+    max-width: 620px;
+    height: 100px;
+    margin-top: -120px;
+    z-index: 2;
+    position: relative;
+}
+
+.animate__width {
+    animation: widthRemove 2s forwards cubic-bezier(0,1.07,1,1);
+}
+
+@keyframes widthRemove {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0%;
+    }
 }
 
 .welcome__read--2 {
@@ -86,7 +153,7 @@ span {
     height: 100vh;
     /* background: #000; */
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
     opacity: 0;
 }
 
