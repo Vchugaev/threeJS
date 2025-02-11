@@ -255,7 +255,6 @@ window.addEventListener('scroll', () => {
                     // но в данном случае делаем просто intensity * 2
                     child.material.emissiveIntensity = intensity * Math.pow(state.value / 300, 3);  // Exponential increase
                     child.material.roughness = intensity * state.value / 800;
-                    // Если нужно изменить roughness, раскомментируйте и скорректируйте:
                     // child.material.roughness = -intensity;
                 }
             });
