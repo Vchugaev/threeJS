@@ -1,45 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crystal project</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Liter&display=swap" rel="stylesheet">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Liter&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+  </head>
 
-<body>
+  <body>
     <canvas class="canvas"></canvas>
     <section>
-        <div class="wrapper">
-            <div class="welcome">
-                <span>Добро</span>
-                <span>Пожаловать</span>
-                <span>text</span>
-                <button class="welcome__read--1">Читать</button>
-            </div>
-
-            <div class="description">
-                <span class="description__text">С этого</span>
-                <span class="description__text">момента</span>
-                <span class="description__text">Lorem ipsum</span>
-                <span class="description__text">TEXT TEXT</span>
-                <button class="welcome__read--2">Читать</button>
-            </div>
+      <div class="wrapper">
+        <div class="welcome">
+          <span>Оно кажется хаотичным</span>
+          <span>но в нём скрыт порядок</span><br />
+          <span>Готов разобраться?</span>
+          <button class="welcome__read--1">Читать дальше</button>
         </div>
+
+        <div class="description">
+          <span class="description__text">Любая задача</span>
+          <span class="description__text">— это набор элементов</span>
+          <span class="description__text">Вопрос в том, как</span>
+          <span class="description__text">их собрать воедино</span>
+        </div>
+      </div>
     </section>
     <section class="about">
-        <h2 class="chugaev">Чугаев Артём</h2>
-        <p class="about__text">Я превращаю идеи в живые истории, вкладывая в каждую работу чувство и тепло.</p>
-        <div class="about__text__box">
+      <p class="static-text text__description">
+        Идея, которая кажется гениальной Первые строки кода Ошибка. Ошибка.
+        Ошибка. Гугл. Stack Overflow. Чаты разработчиков. Попытка исправить баг
+        — появилось два новых. Ночной дебаг, кофе, бессонница. Почему оно не
+        работает? Почему оно работает?! Рефакторинг. Всё сломалось. Глубокий
+        вдох. Разбор кода. Исправление. Перезапуск. Готово? Нет. Ещё правки.
+        Бесконечный цикл.
+      </p>
+      <p class="random__text text__description">
+        Меня зовут <b>Артём</b>. Когда-то я тоже терялся в хаосе кода, но со
+        временем научился видеть в нём порядок.
+      </p>
+    </section>
+    <section class="skills">
+      <h2 class="skills__title">Мои навыки</h2>
+      <div class="swiper__container">
+        <div class="swiper-wrapper skills__list">
+          <div class="swiper-slide">
+            <span class="skills_skill">Node.js</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Express.js</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Next.js</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">React</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Vue.js</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">TypeScript</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">JavaScript</span>
+          </div>
         </div>
+      </div>
+
+      <div class="swiper__container2">
+        <div class="swiper-wrapper skills__list">
+          <div class="swiper-slide">
+            <span class="skills_skill">GraphQL</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">RESTful API</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Firebase</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">SQL</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">MongoDB</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">MySQL</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Redis</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="swiper__container">
+        <div class="swiper-wrapper skills__list">
+          <div class="swiper-slide">
+            <span class="skills_skill">Git</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Linux</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Vite</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Babel</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Jest</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Three.js</span>
+          </div>
+          <div class="swiper-slide">
+            <span class="skills_skill">Bash</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
 
     </section>
     <div class="change__bg__color--plane"></div>
-
-</body>
-
+  </body>
 </html>
