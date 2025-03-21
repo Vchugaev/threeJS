@@ -61,7 +61,7 @@ loadHDRI("./models/fantasy/Space_21.hdr", scene);
 
 let crystal = await loadGLRF("./models/crystal/scene.gltf", scene);
 const { composer } = InitComposer(renderer, scene, camera);
-let stats = initDebugUI(camera, crystal);
+// let stats = initDebugUI(camera, crystal);
 document.documentElement.scrollTop;
 
 camera.position.set(0, 0, 0);
@@ -79,11 +79,11 @@ const clock = new THREE.Clock();
 const tick = () => {
   const delta = clock.getDelta();
   const currentScroll = window.scrollY;
-  stats.begin();
+  // stats.begin();
   window.requestAnimationFrame(tick);
   CrystalRotate(crystal, rotationState, delta, isScroll, currentScroll);
   composer.render();
-  stats.end();
+  // stats.end();
 };
 tick();
 
